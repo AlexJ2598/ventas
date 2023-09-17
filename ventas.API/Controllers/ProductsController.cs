@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
-using ventas.Common.Models;
-using ventas.Domain.Models;
-
-namespace ventas.API.Controllers
+﻿namespace ventas.API.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using System.Web.Http;
+    using System.Web.Http.Description;
+    using ventas.Common.Models;
+    using ventas.Domain.Models;
     public class ProductsController : ApiController
     {
         private DataContext db = new DataContext();
