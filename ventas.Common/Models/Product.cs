@@ -11,5 +11,11 @@
         public Decimal Price { get; set; }
         public bool IsAvailable { get; set; }
         public DateTime PublishOn { get; set; }
+
+        //Para mostrar la lista de productos.
+        public override string ToString()
+        {
+            return this.Description;
+        }
     }
 }

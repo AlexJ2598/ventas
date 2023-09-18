@@ -30,7 +30,7 @@
                 return new Response
                 {
                     isSuccess = true,
-                    Result = list,
+                    Result = list, 
                 };
 
 
