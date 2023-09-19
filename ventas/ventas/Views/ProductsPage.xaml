@@ -10,7 +10,10 @@
             Padding="5">
             <ListView
                 HasUnevenRows="True" 
-                ItemsSource="{Binding Products}"> <!--Son productos que tenemos que pintar desde la pagina ProductsViewModel-->
+                IsRefreshing="{Binding IsRefreshing}" 
+                IsPullToRefreshEnabled="True"
+                ItemsSource="{Binding Products}"
+                RefreshCommand="{Binding RefreshCommand}"><!--ItemsSource="{Binding Products Son productos que tenemos que pintar desde la pagina ProductsViewModel-->
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
