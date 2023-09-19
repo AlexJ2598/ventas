@@ -35,8 +35,15 @@
         private async void LoadProducts()
         {
             this.IsRefreshing = true;
-            //var url = Application.Current.Resources["UrlAPI"].ToString(); //Consumimos el recuros url creado en APP.xaml. Necesita tiempo
-            var response = await this.apiService.GetList<Product>("https://ventasapi20230917000719.azurewebsites.net", "/api", "/Products"); //Consume la url base, el prefijo y controlador
+            var connection = await this.apiService.CheckConnection();
+            if (!connection.isSuccess)
+            {
+                this.IsRefreshing = false;
+                await Application.Current.MainPage.DisplayAlert("Error", connection.Message, "Aceptar");
+                return;
+            }
+            var url = Application.Current.Resources["UrlAPI"].ToString(); //Consumimos el recuros url creado en APP.xaml. Necesita tiempo
+            var response = await this.apiService.GetList<Product>(url, "/api", "/Products"); //Consume la url base, el prefijo y controlador
             if(!response.isSuccess)
             {
                 this.IsRefreshing = false;

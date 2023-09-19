@@ -1,6 +1,7 @@
 ﻿namespace ventas.Services
 {
     using Newtonsoft.Json;
+    using Plugin.Connectivity;
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
@@ -8,6 +9,32 @@
     using ventas.Common.Models;
     public class ApiService
     {
+        public async Task<Response> CheckConnection()
+        {
+            if (!CrossConnectivity.Current.IsConnected) //    using Plugin.Connectivity; para verificar la conexion.
+            {
+                //Este metodo es para identifcar que el telefono tenga conexionn a internet. Que tenga el internet activado.
+                return new Response
+                {
+                    isSuccess = false,
+                    Message = "Favor de activar el wifi, o salir del modo avion", //Languages.InternetSetting
+                };
+            }
+            var isReachable = await CrossConnectivity.Current.IsRemoteReachable("google.com");
+            if (!isReachable)
+            {
+                //Tiene el wifi o los datos activos. Hacemos un ping para ver si no es problema de su red o se quedo sin datos
+                return new Response
+                {
+                    isSuccess = false,
+                    Message = "No hay conexión a internet"
+                };
+            }
+            return new Response
+            {
+                isSuccess = true
+            };
+        }
         public async Task <Response> GetList<T>(string urlBase, string prefix, string controller)
         {
             try
