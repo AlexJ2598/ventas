@@ -7,6 +7,8 @@
     using System.Net.Http;
     using System.Threading.Tasks;
     using ventas.Common.Models;
+    using ventas.Helpers;
+
     public class ApiService
     {
         public async Task<Response> CheckConnection()
@@ -17,7 +19,7 @@
                 return new Response
                 {
                     isSuccess = false,
-                    Message = "Favor de activar el wifi, o salir del modo avion", //Languages.InternetSetting
+                    Message = Languages.TurnOnInternet, //Languages.InternetSetting
                 };
             }
             var isReachable = await CrossConnectivity.Current.IsRemoteReachable("google.com");
@@ -27,7 +29,7 @@
                 return new Response
                 {
                     isSuccess = false,
-                    Message = "No hay conexión a internet"
+                    Message = Languages.NoInternet,
                 };
             }
             return new Response
