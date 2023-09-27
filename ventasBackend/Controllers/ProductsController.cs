@@ -1,11 +1,13 @@
 ﻿namespace ventasBackend.Controllers
 {
+    using System;
     using System.Data.Entity;
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using ventas.Common.Models;
+    using ventasBackend.Helpers;
     using ventasBackend.Models;
     public class ProductsController : Controller
     {
@@ -41,16 +43,40 @@
         // POST: Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Product product) //Siempre quitamos[Bind(Include = "ProductID,Description,Remarks,ImagePath,Price,IsAvailable,PublishOn")], porque para modificar el prodcutos va a seguir funcionando el metodo create.
+        public async Task<ActionResult> Create(ProductView view) //Siempre quitamos[Bind(Include = "ProductID,Description,Remarks,ImagePath,Price,IsAvailable,PublishOn")], porque para modificar el prodcutos va a seguir funcionando el metodo create.
         {
             if (ModelState.IsValid)
             {
+                var pic = string.Empty;
+                var folder = "~/Content/Products";
+
+                if (view.ImageFile != null)
+                {
+                    pic = FileHelper.UploadPhoto(view.ImageFile, folder);
+                    pic = $"{folder}/{pic}";
+                }
+                //Cargamos la imagen al sistema. Tenmosm que convertir la vista a producto.
+                var product = this.ToProduct(view, pic);
                 this.db.Products.Add(product);
                 await this.db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(product);
+            return View(view);
+        }
+
+        private Product ToProduct(ProductView view, string pic)
+        {
+            return new Product
+            {
+                Description = view.Description,
+                ImagePath = pic,
+                IsAvailable = view.IsAvailable,
+                Price = view.Price,
+                ProductID = view.ProductID,
+                PublishOn = view.PublishOn,
+                Remarks = view.Remarks,
+            };
         }
 
         // GET: Products/Edit/5
